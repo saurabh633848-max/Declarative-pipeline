@@ -10,14 +10,14 @@ pipeline {
 
         stage('Copy Files to Nginx Directory') {
             steps {
-                echo 'Copying files to /var/www/html/ ...'
+                echo 'Copying files to /var/www/html/...'
                 sh 'sudo cp -r * /var/www/html/'
             }
         }
 
         stage('Restart Nginx') {
             steps {
-                echo 'Restarting Nginx server...'
+                echo 'Restarting Nginx...'
                 sh 'sudo systemctl restart nginx'
             }
         }
@@ -25,10 +25,10 @@ pipeline {
 
     post {
         success {
-            echo 'Deployment succeeded.'
+            echo '✅ Deployment successful.'
         }
         failure {
-            echo 'Deployment failed.'
+            echo '❌ Deployment failed.'
         }
     }
 }
