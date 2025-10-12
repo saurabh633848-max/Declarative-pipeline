@@ -11,29 +11,26 @@ pipeline {
         stage('Unzip Website Files') {
             steps {
                 echo 'Unzipping project.zip...'
-                // Unzip project.zip inside the workspace directory
                 sh '''
-                   unzip -o project.zip -d .
+                    unzip -o project.zip -d .
                 '''
             }
         }
 
-        stage('Copy Files to Nginx') {
+        stage('Copy Index and Site Files') {
             steps {
-                echo 'Copying files to /var/www/html...'
-                // Copy all unzipped files to nginx root
+                echo 'Copying website files from templatemo_597_neural_glass to /var/www/html...'
                 sh '''
-                   sudo cp -r * /var/www/html/
+                    sudo cp -r templatemo_597_neural_glass/* /var/www/html/
                 '''
             }
         }
 
-        stage('Restart Nginx (Optional)') {
+        stage('Restart Nginx') {
             steps {
                 echo 'Restarting Nginx...'
-                // Restart nginx to apply changes
                 sh '''
-                   sudo systemctl restart nginx
+                    sudo systemctl restart nginx
                 '''
             }
         }
