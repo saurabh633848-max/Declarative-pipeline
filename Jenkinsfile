@@ -10,7 +10,7 @@ pipeline {
 
         stage('Copy Files to /var/www') {
             steps {
-                echo 'Copying files from Jenkins workspace to /usr/share/nginx/html ...'
+                echo 'Copying files from Jenkins workspace to /usr/share/nginx/html...'
                 sh '''
                     rm -rf /var/www/*
                     cp -r ${WORKSPACE}/* /var/www/
