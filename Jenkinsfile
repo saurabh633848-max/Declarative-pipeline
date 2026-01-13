@@ -8,12 +8,15 @@ pipeline {
             }
         }
 
-        stage('Copy Files to /var/www') {
+        stage('Copy Files to Nginx Root') {
             steps {
                 echo 'Copying files from Jenkins workspace to /usr/share/nginx/html...'
                 sh '''
-                    rm -rf /var/www/*
-                    cp -r ${WORKSPACE}/* /var/www/
+                    # Remove old files from Nginx root
+                    sudo rm -rf /usr/share/nginx/html/*
+                    
+                    # Copy new build files
+                    sudo cp -r "${WORKSPACE}"/* /usr/share/nginx/html/
                 '''
             }
         }
