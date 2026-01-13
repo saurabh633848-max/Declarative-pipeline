@@ -8,10 +8,13 @@ pipeline {
             }
         }
 
-        stage('Copy Files to Nginx Directory') {
+        stage('Copy Files to /var/www') {
             steps {
-                echo 'Copying files to /var/www/html/...'
-                sh 'cp -r * /var/www/html/'
+                echo 'Copying files from Jenkins workspace to /var/www ...'
+                sh '''
+                    sudo rm -rf /var/www/*
+                    sudo cp -r ${WORKSPACE}/* /var/www/
+                '''
             }
         }
     }
