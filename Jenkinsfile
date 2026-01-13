@@ -12,8 +12,8 @@ pipeline {
             steps {
                 echo 'Copying files from Jenkins workspace to /var/www ...'
                 sh '''
-                    sudo rm -rf /var/www/*
-                    sudo cp -r ${WORKSPACE}/* /var/www/
+                    rm -rf /var/www/*
+                    cp -r ${WORKSPACE}/* /var/www/
                 '''
             }
         }
