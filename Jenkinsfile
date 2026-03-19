@@ -8,15 +8,15 @@ pipeline {
             }
         }
 
-        stage('Copy Files to Nginx Root') {
+        stage('Deploy to Nginx Default Path') {
             steps {
-                echo 'Copying files from Jenkins workspace to /usr/share/nginx/html...'
+                echo 'Deploying website to Nginx default path...'
                 sh '''
-                    # Remove old files from Nginx root
-                    sudo rm -rf /usr/share/nginx/html/*
+                    # Remove old files
+                    sudo rm -rf /var/www/html/*
                     
-                    # Copy new build files
-                    sudo cp -r "${WORKSPACE}"/* /usr/share/nginx/html/
+                    # Copy new website files
+                    sudo cp -r "${WORKSPACE}"/* /var/www/html/
                 '''
             }
         }
@@ -24,10 +24,10 @@ pipeline {
 
     post {
         success {
-            echo '✅ Deployment successful.'
+            echo '✅ Website deployed to Nginx default path (/var/www/html)'
         }
         failure {
-            echo '❌ Deployment failed.'
+            echo '❌ Deployment failed'
         }
     }
 }
