@@ -14,7 +14,7 @@ pipeline {
                 echo 'Deploying website to Nginx default path...'
                 sh '''
                     # Clean old files
-                    rm -rf /var/www/html/*
+                   sh 'sudo rm -rf /var/www/html/index.nginx-debian.html'
                     
                     # Copy new files from workspace
                     cp -r * /var/www/html/
