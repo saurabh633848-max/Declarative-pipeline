@@ -2,10 +2,17 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout Code') {
             steps {
-                // Jenkins automatically clones from repo (Jenkinsfile source)
-                checkout scm
+                echo 'Cloning repository...'
+                git branch: 'main', url: 'https://github.com/saurabh633848-max/Declarative-pipeline.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                echo 'No build step required for static website...'
             }
         }
 
@@ -13,11 +20,11 @@ pipeline {
             steps {
                 echo 'Deploying website to Nginx default path...'
                 sh '''
-                    # Clean old files
-                   sh 'sudo rm -rf /var/www/html/index.nginx-debian.html'
-                    
-                    # Copy new files from workspace
-                    cp -r * /var/www/html/
+                # Remove default nginx page
+                rm -rf /var/www/html/*
+
+                # Copy new website files
+                cp -r * /var/www/html/
                 '''
             }
         }
@@ -25,7 +32,7 @@ pipeline {
 
     post {
         success {
-            echo '✅ Website deployed successfully to /var/www/html'
+            echo '✅ Deployment successful!'
         }
         failure {
             echo '❌ Deployment failed'
