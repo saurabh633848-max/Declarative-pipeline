@@ -1,17 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        SERVER_IP = "10.0.1.20"
-        DEPLOY_PATH = "/var/www/html"
-    }
-
     stages {
 
         stage('Checkout Code') {
             steps {
                 echo 'Cloning GitHub repository...'
-
                 git branch: 'main',
                 url: 'https://github.com/saurabh633848-max/Declarative-pipeline.git'
             }
@@ -22,36 +16,35 @@ pipeline {
 
                 sshagent(credentials: ['nginx-server']) {
 
-                    sh """
-                    
-                    echo "Removing old website files from Nginx server..."
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@10.0.1.20 "
 
-                    ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP '
-                    
-                    sudo rm -rf $DEPLOY_PATH/*
-                    
-                    '
+                    sudo rm -rf /var/www/html/*
 
-                    echo "Copying new website files..."
+                    sudo mkdir -p /var/www/html
 
-                    scp -o StrictHostKeyChecking=no -r * ubuntu@$SERVER_IP:$DEPLOY_PATH/
+                    "
+                    '''
 
-                    echo "Restarting Nginx..."
+                    sh '''
+                    scp -o StrictHostKeyChecking=no -r * ubuntu@10.0.1.20:/tmp/
+                    '''
 
-                    ssh -o StrictHostKeyChecking=no ubuntu@$SERVER_IP '
-                    
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@10.0.1.20 "
+
+                    sudo cp -r /tmp/* /var/www/html/
+
                     sudo systemctl restart nginx
-                    
-                    '
 
-                    """
+                    "
+                    '''
                 }
             }
         }
     }
 
     post {
-
         success {
             echo '✅ Website deployed successfully to Nginx EC2'
         }
