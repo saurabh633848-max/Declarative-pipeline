@@ -7,19 +7,17 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  imageRepository: 'myapp'
+  imageRepository: 'my-html-app'
   tag: '$(Build.BuildId)'
 
 steps:
-# Checkout source code
 - checkout: self
 
-# Build and push Docker image to ACR
 - task: Docker@2
-  displayName: Build and Push Image
+  displayName: Build and Push Image to ACR
   inputs:
     command: buildAndPush
-    containerRegistry: 'ACR-ServiceConnection'
+    containerRegistry: 'MyACRConnection'
     repository: '$(imageRepository)'
     dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     tags: |
