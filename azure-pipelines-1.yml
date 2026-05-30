@@ -1,0 +1,25 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  imageRepository: 'my-html-app'
+  tag: '$(Build.BuildId)'
+
+steps:
+- checkout: self
+
+- task: Docker@2
+  displayName: Build and Push Image to ACR
+  inputs:
+    command: buildAndPush
+    containerRegistry: 'myregistry.azurecr.io'
+    repository: '$(imageRepository)'
+    dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    tags: |
+      $(tag)
+      latest
