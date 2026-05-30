@@ -4,22 +4,22 @@ trigger:
       - main
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 variables:
-  imageRepository: 'my-html-app'
-  tag: '$(Build.BuildId)'
+  imageRepository: my-html-app
+  tag: $(Build.BuildId)
 
 steps:
 - checkout: self
 
 - task: Docker@2
-  displayName: 'Build and Push Image to ACR'
+  displayName: Build and Push Image to ACR
   inputs:
-    command: 'buildAndPush'
-    containerRegistry: 'containernew'
-    repository: '$(imageRepository)'
-    dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    command: buildAndPush
+    containerRegistry: containernew
+    repository: $(imageRepository)
+    dockerfile: $(Build.SourcesDirectory)/Dockerfile
     tags: |
       $(tag)
       latest
