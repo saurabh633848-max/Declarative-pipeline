@@ -17,7 +17,7 @@ steps:
   displayName: Build and Push Image to ACR
   inputs:
     command: buildAndPush
-    containerRegistry: 'MyACRConnection'
+    containerRegistry: 'myregistry.azurecr.io'
     repository: '$(imageRepository)'
     dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
     tags: |
